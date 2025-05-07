@@ -1,0 +1,50 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+body {
+  @apply bg-gray-900 text-gray-100;
+}
+
+.card {
+  @apply bg-gray-800 p-6 rounded-lg shadow-lg flex items-center space-x-4;
+}
+
+.card-header {
+  @apply text-xl font-bold mb-4 text-gray-100;
+}
+
+.card-body {
+  @apply text-gray-300;
+}
+
+.card-footer {
+  @apply mt-4 flex justify-end;
+}
+
+.table-row {
+  @apply hover:bg-gray-700;
+}
+
+button {
+  @apply px-4 py-2 rounded-lg transition;
+}
+
+button.primary {
+  @apply bg-blue-600 text-white hover:bg-blue-700;
+}
+
+button.secondary {
+  @apply bg-gray-700 text-gray-300 hover:bg-gray-600;
+}
+
+/* Remove hover square issue */
+button:focus {
+  outline: none;
+}
+
+.chart:hover {
+  pointer-events: none; /* Disable hover interactions */
+}
