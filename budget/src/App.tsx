@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import type { Budget, Transaction, TransactionType } from './types';
+import React, { useState } from 'react';
+import type { Budget, Transaction } from './types';
 import Navbar from './components/Navbar';
 import Dashboard from './components/Dashboard';
 import ExpenseForm from './components/ExpenseForm';
-import Alerts from './components/Alerts';
 import BudgetSetup from './components/BudgetSetup';
 import ExpenseList from './components/ExpenseList';
 
 const App: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [budget, setBudget] = useState<Budget>({ monthlyLimit: 2000, maxExpense: 1000 });
+  const [budget, setBudget] = useState<Budget | null>(null); // Initialize as null
   const [showForm, setShowForm] = useState(false);
   const [transactionToEdit, setTransactionToEdit] = useState<Transaction | null>(null);
 
@@ -36,6 +35,11 @@ const App: React.FC = () => {
     setShowForm(true);
   };
 
+  // Show BudgetSetup if budget is not set
+  if (!budget) {
+    return <BudgetSetup onSubmit={setBudget} />;
+  }
+
   return (
     <div className="app bg-gray-900 text-gray-100 min-h-screen">
       <Navbar onAddClick={() => setShowForm(true)} />
@@ -45,7 +49,6 @@ const App: React.FC = () => {
           budget={budget}
           onDelete={deleteTransaction}
         />
-        {/* Render ExpenseList only once */}
         <ExpenseList
           transactions={transactions}
           onDelete={deleteTransaction}
