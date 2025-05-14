@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { Budget, Transaction } from './types';
 import Navbar from './components/Navbar';
 import Dashboard from './components/Dashboard';
@@ -12,6 +12,32 @@ const App: React.FC = () => {
   const [budget, setBudget] = useState<Budget | null>(null); // Initialize as null
   const [showForm, setShowForm] = useState(false);
   const [transactionToEdit, setTransactionToEdit] = useState<Transaction | null>(null);
+
+  // Load budget and transactions from localStorage on app initialization
+  useEffect(() => {
+    const savedBudget = localStorage.getItem('budget');
+    const savedTransactions = localStorage.getItem('transactions');
+
+    if (savedBudget) {
+      setBudget(JSON.parse(savedBudget));
+    }
+
+    if (savedTransactions) {
+      setTransactions(JSON.parse(savedTransactions));
+    }
+  }, []);
+
+  // Save budget to localStorage whenever it changes
+  useEffect(() => {
+    if (budget) {
+      localStorage.setItem('budget', JSON.stringify(budget));
+    }
+  }, [budget]);
+
+  // Save transactions to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('transactions', JSON.stringify(transactions));
+  }, [transactions]);
 
   const addTransaction = (transaction: Omit<Transaction, 'id'>) => {
     const newTransaction = {
