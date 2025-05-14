@@ -43,13 +43,23 @@ const Charts: React.FC<ChartsProps> = ({ transactions }) => {
               dataKey="value"
               nameKey="name"
               label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-              isAnimationActive={true} // Enable animations
+              isAnimationActive={true}
             >
               {categoryData.map((_entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
-            <Tooltip cursor={{ fill: 'transparent' }} /> {/* Keep tooltip but disable hover effects */}
+            <Tooltip
+              cursor={{ fill: 'transparent' }}
+              wrapperStyle={{
+                pointerEvents: 'none', // Prevent flickering
+                backgroundColor: '#333',
+                color: '#fff',
+                borderRadius: '5px',
+                padding: '5px',
+              }}
+              filterNull={true} // Ignore null data points
+            />
           </PieChart>
         </ResponsiveContainer>
       </div>
@@ -62,12 +72,22 @@ const Charts: React.FC<ChartsProps> = ({ transactions }) => {
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
-            <Tooltip cursor={{ fill: 'transparent' }} /> {/* Keep tooltip but disable hover effects */}
+            <Tooltip
+              cursor={{ fill: 'transparent' }}
+              wrapperStyle={{
+                pointerEvents: 'none', // Prevent flickering
+                backgroundColor: '#333',
+                color: '#fff',
+                borderRadius: '5px',
+                padding: '5px',
+              }}
+              filterNull={true} // Ignore null data points
+            />
             <Bar
               dataKey="amount"
               fill="#8884d8"
               name="Amount spent"
-              isAnimationActive={true} // Enable animations
+              isAnimationActive={true}
             />
           </BarChart>
         </ResponsiveContainer>

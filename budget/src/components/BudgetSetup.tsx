@@ -8,12 +8,29 @@ interface BudgetSetupProps {
 const BudgetSetup: React.FC<BudgetSetupProps> = ({ onSubmit }) => {
   const [monthlyLimit, setMonthlyLimit] = useState('');
   const [maxExpense, setMaxExpense] = useState('');
+  const [error, setError] = useState<string | null>(null); // State for validation errors
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    const parsedMonthlyLimit = parseFloat(monthlyLimit);
+    const parsedMaxExpense = parseFloat(maxExpense);
+
+    // Validation: Ensure both values are positive numbers
+    if (isNaN(parsedMonthlyLimit) || parsedMonthlyLimit <= 0) {
+      setError('Monthly limit must be a positive number.');
+      return;
+    }
+
+    if (isNaN(parsedMaxExpense) || parsedMaxExpense <= 0) {
+      setError('Maximum daily expense must be a positive number.');
+      return;
+    }
+
+    setError(null); // Clear any previous errors
     onSubmit({
-      monthlyLimit: parseFloat(monthlyLimit),
-      maxExpense: parseFloat(maxExpense),
+      monthlyLimit: parsedMonthlyLimit,
+      maxExpense: parsedMaxExpense,
     });
   };
 
@@ -22,6 +39,11 @@ const BudgetSetup: React.FC<BudgetSetupProps> = ({ onSubmit }) => {
       <div className="bg-gray-900 p-8 rounded-lg shadow-lg w-full max-w-lg">
         <h2 className="text-2xl font-bold mb-6 text-gray-100">Set Your Budget</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
+          {error && (
+            <div className="text-red-500 text-sm mb-4">
+              {error}
+            </div>
+          )}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">Your Starting Budget</label>
             <input

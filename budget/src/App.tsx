@@ -5,6 +5,7 @@ import Dashboard from './components/Dashboard';
 import ExpenseForm from './components/ExpenseForm';
 import BudgetSetup from './components/BudgetSetup';
 import ExpenseList from './components/ExpenseList';
+import Alerts from './components/Alerts';
 
 const App: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -44,6 +45,7 @@ const App: React.FC = () => {
     <div className="app bg-gray-900 text-gray-100 min-h-screen">
       <Navbar onAddClick={() => setShowForm(true)} />
       <div className="container mx-auto p-4 space-y-6">
+        <Alerts transactions={transactions} maxExpense={budget.maxExpense} />
         <Dashboard
           transactions={transactions}
           budget={budget}

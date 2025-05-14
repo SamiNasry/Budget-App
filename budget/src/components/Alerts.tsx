@@ -1,32 +1,27 @@
 import React from 'react';
-import type { Transaction, Budget } from '../types';
-import sumBy from 'lodash/sumBy';
+import type { Transaction } from '../types';
 
 interface AlertsProps {
   transactions: Transaction[];
-  budget: Budget;
+  maxExpense: number;
 }
 
-const Alerts: React.FC<AlertsProps> = ({ transactions, budget }) => {
-  const totalExpenses = sumBy(
-    transactions.filter((t) => t.type === 'expense'),
-    'amount'
+const Alerts: React.FC<AlertsProps> = ({ transactions, maxExpense }) => {
+  // Check if any transaction exceeds the maxExpense limit
+  const isOverMaxExpense = transactions.some(
+    (transaction) => transaction.type === 'expense' && transaction.amount > maxExpense
   );
-  const isOverBudget = totalExpenses > budget.monthlyLimit;
-  const isOverMaxExpense = totalExpenses > budget.maxExpense;
 
-  if (!isOverBudget && !isOverMaxExpense) return null;
+  // Debugging: Log transactions and maxExpense
+  console.log('Transactions:', transactions);
+  console.log('Max Expense Limit:', maxExpense);
+  console.log('Is Over Max Expense:', isOverMaxExpense);
 
   return (
-    <div className="alerts space-y-4">
-      {isOverBudget && (
-        <div className="alert alert-danger">
-          Warning: You've exceeded your monthly budget!
-        </div>
-      )}
+    <div>
       {isOverMaxExpense && (
-        <div className="alert alert-warning">
-          Warning: Your expenses have exceeded the maximum expense limit!
+        <div className="bg-red-500 text-white p-4 rounded-lg">
+          Warning: One or more transactions exceed the maximum daily expense limit of ${maxExpense}.
         </div>
       )}
     </div>
