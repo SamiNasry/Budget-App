@@ -6,12 +6,14 @@ import ExpenseForm from './components/ExpenseForm';
 import BudgetSetup from './components/BudgetSetup';
 import ExpenseList from './components/ExpenseList';
 import Alerts from './components/Alerts';
+import PDFExport from './components/PDFExport'; // Import the component
 
 const App: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [budget, setBudget] = useState<Budget | null>(null); // Initialize as null
   const [showForm, setShowForm] = useState(false);
   const [transactionToEdit, setTransactionToEdit] = useState<Transaction | null>(null);
+  const [showPDFExport, setShowPDFExport] = useState(false);
 
   // Load budget and transactions from localStorage on app initialization
   useEffect(() => {
@@ -69,7 +71,10 @@ const App: React.FC = () => {
 
   return (
     <div className="app bg-gray-900 text-gray-100 min-h-screen">
-      <Navbar onAddClick={() => setShowForm(true)} />
+      <Navbar
+        onAddClick={() => setShowForm(true)}
+        onExportClick={() => setShowPDFExport(true)}
+      />
       <div className="container mx-auto p-4 space-y-6">
         <Alerts transactions={transactions} maxExpense={budget.maxExpense} />
         <Dashboard
@@ -93,6 +98,12 @@ const App: React.FC = () => {
             transactionToEdit={transactionToEdit}
           />
         )}
+        {showPDFExport && (
+  <PDFExport
+    transactions={transactions}
+    onClose={() => setShowPDFExport(false)}
+  />
+)}
       </div>
     </div>
   );
