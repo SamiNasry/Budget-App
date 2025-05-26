@@ -11,7 +11,7 @@ const PDFExport: React.FC<PDFExportProps> = ({ transactions }) => {
   const componentRef = useRef<HTMLDivElement>(null);
 
   const handlePrint = useReactToPrint({
-    contentRef: componentRef,
+    content: () => componentRef.current,
     bodyClass: 'print-body',
     pageStyle: `
       @page { size: A4; margin: 1cm; }
